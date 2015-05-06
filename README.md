@@ -1,5 +1,5 @@
 # Infix-Prefix-Postfix-Converter
-Windows Universal App to convert Infix Prefix Postfix notations
+[ Windows , Windows Phone ] Universal App to convert Infix Prefix Postfix notations
 
 STORE:
 Windows Phone 8.1
