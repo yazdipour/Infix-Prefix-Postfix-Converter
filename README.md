@@ -1,6 +1,6 @@
 # Infix-Prefix-Postfix-Converter
 
-Simple C# -Win32- App to convert Infix Prefix Postfix notations
+Simple C# -Win32- App which convert Infix Prefix Postfix notations
 
 
 Used on:
