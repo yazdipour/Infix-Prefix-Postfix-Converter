@@ -1,38 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InfixPrefixPostfixConverter
+namespace InfixPrefixPostfix
 {
-    class Stack
+    internal class Stack
     {
-        private string[] TheStack;
+        private readonly string[] TheStack;
+        private readonly int TheStackSize;
         private int top = -1;
-        private int TheStackSize;
 
-        public Stack(int size=20)
+        public Stack(int size = 20)
         {
             TheStack = new string[size];
-            this.TheStackSize = size;
+            TheStackSize = size;
         }
+
         public string peek()
         {
-            if (isEmpty()) 
+            if (isEmpty())
                 throw new Exception();
-            return TheStack[top];            
+            return TheStack[top];
         }
-        public string pop(){
-            string res = peek();
+
+        public string pop()
+        {
+            var res = peek();
             top--;
             return res;
         }
+
         public void push(string value)
         {
-            if(top!=TheStackSize-1)TheStack[++top]=(value);
+            if (top != TheStackSize - 1) TheStack[++top] = value;
             else throw new Exception();
         }
+
         public bool isEmpty()
         {
             return top == -1;
