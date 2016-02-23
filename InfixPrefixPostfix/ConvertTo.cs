@@ -1,16 +1,12 @@
-﻿using InfixPrefixPostfixConverter;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace InfixPrefixPostfixConverter
+namespace InfixPrefixPostfix
 {
-    class ConvertTo
+    internal class ConvertTo
     {
-        Stack myStack;
         public string INstr = "", POSTstr = "", PREstr = "", eval = "";
+        private Stack myStack;
+
         public ConvertTo(string myStr = "", string myStr2 = "", string myStr3 = "")
         {
             INstr = myStr;
@@ -19,10 +15,12 @@ namespace InfixPrefixPostfixConverter
         }
 
         #region Checkers
+
         private bool isLetter(char ele)
         {
-            return ((ele >= 'a' && ele <= 'z') || (ele >= 'A' && ele <= 'Z'));
+            return (ele >= 'a' && ele <= 'z') || (ele >= 'A' && ele <= 'Z');
         }
+
         private bool isOperator(char symbol)
         {
             switch (symbol)
@@ -39,13 +37,14 @@ namespace InfixPrefixPostfixConverter
             }
             return false;
         }
+
         private bool isStringANum(string op1)
         {
-            
-            for (int i = 0; i < op1.Length; i++)
-                if (Char.IsNumber(op1[i])) return true;
+            for (var i = 0; i < op1.Length; i++)
+                if (char.IsNumber(op1[i])) return true;
             return false;
         }
+
         private short priority(char symbol)
         {
             switch (symbol)
@@ -67,6 +66,7 @@ namespace InfixPrefixPostfixConverter
         #endregion
 
         #region Callers
+
         public string InToPost()
         {
             //if (POSTstr != "") return POSTstr;
@@ -74,40 +74,46 @@ namespace InfixPrefixPostfixConverter
             POSTstr = I2Po();
             return POSTstr;
         }
+
         public string InToPre()
         {
             PREstr = I2Pre();
             return PREstr;
         }
+
         public string Evaluate()
         {
             //if (eval != "") return eval;
             if (POSTstr.Contains("Error")) return "Error";
-            else if (POSTstr == "")
+            if (POSTstr == "")
             {
-                if(INstr!="")POSTstr = InToPost();
+                if (INstr != "") POSTstr = InToPost();
                 else if (PREstr != "") POSTstr = PreToPost();
                 else return "Error";
             }
             eval = evaPost();
             return eval;
         }
+
         public string PostToIn()
         {
             INstr = Po2I();
             return INstr;
         }
+
         public string PreToIn()
         {
-            INstr=Pre2I();
+            INstr = Pre2I();
             return INstr;
         }
+
         public string PreToPost()
         {
             PreToIn();
             POSTstr = InToPost();
             return POSTstr;
         }
+
         public string PostToPre()
         {
             PostToIn();
@@ -118,25 +124,26 @@ namespace InfixPrefixPostfixConverter
         #endregion
 
         #region CALCULATORS
+
         private string I2Po()
         {
             if (INstr.Contains("Error") || INstr == "") return "Error";
 
             myStack = new Stack(INstr.Length);
-            string res = "";
+            var res = "";
             char ele;
-            for (int pivot = 0; pivot != INstr.Length; pivot++)
+            for (var pivot = 0; pivot != INstr.Length; pivot++)
             {
                 ele = INstr[pivot];
                 if (isLetter(ele))
                     res += ele;
-                else if (Char.IsNumber(ele))
+                else if (char.IsNumber(ele))
                 {
-                    string newStr = ele + "";
-                    for (int i = pivot + 1; i < INstr.Length; i++, pivot++)
+                    var newStr = ele + "";
+                    for (var i = pivot + 1; i < INstr.Length; i++, pivot++)
                     {
-                        char newNum = INstr[i];
-                        if (!Char.IsNumber(newNum)) break;
+                        var newNum = INstr[i];
+                        if (!char.IsNumber(newNum)) break;
                         newStr += newNum;
                     }
                     if (newStr != "" + ele) newStr = "," + newStr + ",";
@@ -151,7 +158,7 @@ namespace InfixPrefixPostfixConverter
                             myStack.push(ele.ToString());
                             break;
                         }
-                        else if (ele == ')')
+                        if (ele == ')')
                         {
                             while (myStack.peek() != "(")
                                 res += myStack.pop();
@@ -160,12 +167,12 @@ namespace InfixPrefixPostfixConverter
                             break;
                         }
 
-                        else if (priority(ele) > priority(myStack.peek()[0]))
+                        if (priority(ele) > priority(myStack.peek()[0]))
                         {
                             myStack.push(ele.ToString());
                             break;
                         }
-                        else if (priority(ele) <= priority(myStack.peek()[0]))
+                        if (priority(ele) <= priority(myStack.peek()[0]))
                             res += myStack.pop();
                         else
                             return "Error";
@@ -178,19 +185,20 @@ namespace InfixPrefixPostfixConverter
                 res += myStack.pop();
             return res;
         }
+
         private string evaPost()
         {
             myStack = new Stack(POSTstr.Length);
-            for (int pivot = 0; pivot < POSTstr.Length; pivot++)
+            for (var pivot = 0; pivot < POSTstr.Length; pivot++)
             {
-                char ele = POSTstr[pivot];
-                if (isLetter(ele) || Char.IsNumber(ele)) myStack.push(ele.ToString());
+                var ele = POSTstr[pivot];
+                if (isLetter(ele) || char.IsNumber(ele)) myStack.push(ele.ToString());
                 else if (ele == ',')
                 {
-                    string newStr = "";
-                    for (int i = pivot + 1; i < POSTstr.Length; i++)
+                    var newStr = "";
+                    for (var i = pivot + 1; i < POSTstr.Length; i++)
                     {
-                        char ch = POSTstr[i];
+                        var ch = POSTstr[i];
                         pivot++;
                         if (ch == ',') break;
                         newStr += ch;
@@ -200,12 +208,12 @@ namespace InfixPrefixPostfixConverter
                 else if (isOperator(ele))
                 {
                     ///if op2&op1 where number
-                    string op2 = myStack.pop();
-                    string op1 = myStack.pop();
+                    var op2 = myStack.pop();
+                    var op1 = myStack.pop();
                     if (isStringANum(op2) && isStringANum(op1))
                     {
-                        long fst = Convert.ToInt64(op1);
-                        long scnd = Convert.ToInt64(op2);
+                        var fst = Convert.ToInt64(op1);
+                        var scnd = Convert.ToInt64(op2);
                         switch (ele)
                         {
                             case '+':
@@ -215,18 +223,18 @@ namespace InfixPrefixPostfixConverter
                                 myStack.push((fst - scnd).ToString());
                                 break;
                             case '*':
-                                myStack.push((fst * scnd).ToString());
+                                myStack.push((fst*scnd).ToString());
                                 break;
                             case '/':
                                 if (scnd == 0) return "Error-Division by zero";
-                                myStack.push((fst / scnd).ToString());
+                                myStack.push((fst/scnd).ToString());
                                 break;
                             case '^':
                                 myStack.push(Math.Pow(fst, scnd).ToString());
                                 break;
                             case '%':
                                 if (scnd == 0) return "Error-Division by zero";
-                                myStack.push((fst % scnd).ToString());
+                                myStack.push((fst%scnd).ToString());
                                 break;
                             default:
                                 return "Error- Unknown Char";
@@ -243,9 +251,9 @@ namespace InfixPrefixPostfixConverter
         {
             if (POSTstr.Contains("Error") || POSTstr == "") return "Error";
 
-            String result = "", right = "", left = "";
+            string result = "", right = "", left = "";
             myStack = new Stack(POSTstr.Length);
-            for (int pivot = 0; pivot < POSTstr.Length; pivot++)
+            for (var pivot = 0; pivot < POSTstr.Length; pivot++)
             {
                 if (isOperator(POSTstr[pivot]))
                 {
@@ -255,8 +263,8 @@ namespace InfixPrefixPostfixConverter
                 }
                 else if (POSTstr[pivot] == ',')
                 {
-                    string newstr = "";
-                    char ch = ' ';
+                    var newstr = "";
+                    var ch = ' ';
                     while (true)
                     {
                         if (pivot < POSTstr.Length) pivot++;
@@ -274,13 +282,14 @@ namespace InfixPrefixPostfixConverter
             result += myStack.pop();
             return result;
         }
+
         private string Pre2I()
         {
             if (PREstr.Contains("Error") || PREstr == "") return "Error";
 
-            String result = "", right = "", left = "";
+            string result = "", right = "", left = "";
             myStack = new Stack(PREstr.Length);
-            for (int pivot = PREstr.Length - 1; pivot >= 0; pivot--)
+            for (var pivot = PREstr.Length - 1; pivot >= 0; pivot--)
             {
                 if (isOperator(PREstr[pivot]))
                 {
@@ -290,8 +299,8 @@ namespace InfixPrefixPostfixConverter
                 }
                 else if (PREstr[pivot] == ',')
                 {
-                    string newstr = "";
-                    char ch = ' ';
+                    var newstr = "";
+                    var ch = ' ';
                     while (true)
                     {
                         if (pivot >= 0) pivot--;
@@ -309,15 +318,16 @@ namespace InfixPrefixPostfixConverter
             result += myStack.pop();
             return result;
         }
+
         private string I2Pre()
         {
             if (INstr.Contains("Error") || INstr == "") return "Error";
 
-            string result = "";
+            var result = "";
             myStack = new Stack(INstr.Length);
-            string data = INstr;
+            var data = INstr;
 
-            for (int pivot = data.Length - 1; pivot >= 0; pivot--)
+            for (var pivot = data.Length - 1; pivot >= 0; pivot--)
             {
                 if (isOperator(data[pivot]))
                 {
@@ -328,9 +338,10 @@ namespace InfixPrefixPostfixConverter
                             result = myStack.pop() + result;
                         }
                         myStack.pop();
-                    }// (
+                    } // (
 
-                    else if (myStack.isEmpty() || priority(data[pivot]) >= priority(myStack.peek()[0]) || data[pivot] == ')')
+                    else if (myStack.isEmpty() || priority(data[pivot]) >= priority(myStack.peek()[0]) ||
+                             data[pivot] == ')')
                         myStack.push(data[pivot].ToString());
                     else
                     {
@@ -340,16 +351,16 @@ namespace InfixPrefixPostfixConverter
                         }
                         myStack.push(data[pivot].ToString());
                     }
-                }//if isOperator
+                } //if isOperator
 
-                else if (Char.IsNumber(data[pivot]))
+                else if (char.IsNumber(data[pivot]))
                 {
-                    string newStr = data[pivot] + "";
-                    for (int i = pivot - 1; i >= 0; i--, pivot--)
+                    var newStr = data[pivot] + "";
+                    for (var i = pivot - 1; i >= 0; i--, pivot--)
                     {
-                        char newNum = INstr[i];
-                        if (!Char.IsNumber(newNum)) break;
-                        newStr = newNum+newStr;
+                        var newNum = INstr[i];
+                        if (!char.IsNumber(newNum)) break;
+                        newStr = newNum + newStr;
                     }
                     if (newStr != "" + data[pivot]) newStr = "," + newStr + ",";
                     result = newStr + result;
@@ -369,94 +380,5 @@ namespace InfixPrefixPostfixConverter
         }
 
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-        //private string I2Pre()
-        //{
-        //    if (PREstr.Contains("Error") || PREstr == "") return "Error";
-
-        //    myStack = new Stack(INstr.Length);
-        //    Stack myStackopt = new Stack(INstr.Length);
-        //    for (int pivot = 0; pivot < INstr.Length; pivot++)
-        //    {
-        //        char ele = INstr[pivot];
-        //        if (isOperator(ele))
-        //        {
-        //            while (true)
-        //            {
-        //                if (myStackopt.isEmpty() || ele == '(')
-        //                {
-        //                    myStackopt.push(ele.ToString());
-        //                    break;
-        //                }
-        //                else if (ele == ')')
-        //                {
-        //                    while (myStackopt.peek() != "(")
-        //                    {
-        //                        string opt = myStackopt.pop();
-        //                        string op2 = myStack.pop();
-        //                        string op1 = myStack.pop();
-        //                        myStack.push(opt + op1 + op2);
-        //                    }
-        //                    if (myStackopt.pop() != "(")
-        //                        return "Error600";
-        //                    break;
-        //                }
-        //                else if (priority(ele) > priority(myStackopt.peek()[0]))
-        //                {
-        //                    myStackopt.push(ele.ToString());
-        //                    break;
-        //                }
-        //                else if (priority(ele) <= priority(myStackopt.peek()[0]))
-        //                {
-        //                    string opt = myStackopt.pop();
-        //                    string op2 = myStack.pop();
-        //                    string op1 = myStack.pop();
-        //                    myStack.push(opt + op1 + op2);
-        //                }
-        //                else
-        //                    return "Error";
-        //            }
-        //        }
-        //        else if (isLetter(ele))
-        //        {
-        //            myStack.push(ele.ToString());
-        //        }
-        //        else if (Char.IsNumber(ele))
-        //        {
-        //            string newStr = ele + "";
-        //            for (int i = pivot + 1; i < INstr.Length; i++, pivot++)
-        //            {
-        //                char newNum = INstr[i];
-        //                if (!Char.IsNumber(newNum)) break;
-        //                newStr += newNum;
-        //            }
-        //            if (newStr != "" + ele) newStr = "," + newStr + ",";
-        //            myStack.push(newStr);
-        //        }
-        //        else
-        //        {
-        //            return "Error 2000";
-        //        }
-        //    }
-        //    while (!myStackopt.isEmpty())
-        //    {
-        //        string opt = myStackopt.pop();
-        //        string op2 = myStack.pop();
-        //        string op1 = myStack.pop();
-        //        myStack.push(opt + op1 + op2);
-        //    }
-        //    return myStack.pop();
-        //}
-
     }
 }

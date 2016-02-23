@@ -1,0 +1,77 @@
+﻿//private string I2Pre()
+        //{
+        //    if (PREstr.Contains("Error") || PREstr == "") return "Error";
+
+        //    myStack = new Stack(INstr.Length);
+        //    Stack myStackopt = new Stack(INstr.Length);
+        //    for (int pivot = 0; pivot < INstr.Length; pivot++)
+        //    {
+        //        char ele = INstr[pivot];
+        //        if (isOperator(ele))
+        //        {
+        //            while (true)
+        //            {
+        //                if (myStackopt.isEmpty() || ele == '(')
+        //                {
+        //                    myStackopt.push(ele.ToString());
+        //                    break;
+        //                }
+        //                else if (ele == ')')
+        //                {
+        //                    while (myStackopt.peek() != "(")
+        //                    {
+        //                        string opt = myStackopt.pop();
+        //                        string op2 = myStack.pop();
+        //                        string op1 = myStack.pop();
+        //                        myStack.push(opt + op1 + op2);
+        //                    }
+        //                    if (myStackopt.pop() != "(")
+        //                        return "Error600";
+        //                    break;
+        //                }
+        //                else if (priority(ele) > priority(myStackopt.peek()[0]))
+        //                {
+        //                    myStackopt.push(ele.ToString());
+        //                    break;
+        //                }
+        //                else if (priority(ele) <= priority(myStackopt.peek()[0]))
+        //                {
+        //                    string opt = myStackopt.pop();
+        //                    string op2 = myStack.pop();
+        //                    string op1 = myStack.pop();
+        //                    myStack.push(opt + op1 + op2);
+        //                }
+        //                else
+        //                    return "Error";
+        //            }
+        //        }
+        //        else if (isLetter(ele))
+        //        {
+        //            myStack.push(ele.ToString());
+        //        }
+        //        else if (Char.IsNumber(ele))
+        //        {
+        //            string newStr = ele + "";
+        //            for (int i = pivot + 1; i < INstr.Length; i++, pivot++)
+        //            {
+        //                char newNum = INstr[i];
+        //                if (!Char.IsNumber(newNum)) break;
+        //                newStr += newNum;
+        //            }
+        //            if (newStr != "" + ele) newStr = "," + newStr + ",";
+        //            myStack.push(newStr);
+        //        }
+        //        else
+        //        {
+        //            return "Error 2000";
+        //        }
+        //    }
+        //    while (!myStackopt.isEmpty())
+        //    {
+        //        string opt = myStackopt.pop();
+        //        string op2 = myStack.pop();
+        //        string op1 = myStack.pop();
+        //        myStack.push(opt + op1 + op2);
+        //    }
+        //    return myStack.pop();
+        //}
