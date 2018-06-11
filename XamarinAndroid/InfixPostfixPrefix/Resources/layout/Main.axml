@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TableLayout
+        android:id="@+id/tb1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
+        <EditText
+            android:inputType="textNoSuggestions"
+            android:id="@+id/plain"
+            android:gravity="center"
+            android:hint="2+3*4"
+            android:layout_margin="12dp" />
+        <TableRow>
+            <ToggleButton
+                android:layout_width="30dp"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:textOn="@string/in"
+                android:textOff="@string/in"
+                android:id="@+id/infix"
+                android:checked="true" />
+            <ToggleButton
+                android:layout_width="30dp"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:textOff="@string/pre"
+                android:textOn="@string/pre"
+                android:id="@+id/prefix" />
+            <ToggleButton
+                android:layout_width="30dp"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:textOff="@string/pos"
+                android:textOn="@string/pos"
+                android:id="@+id/posfix" />
+        </TableRow>
+        <Button
+            android:id="@+id/MyButton"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:text="CONVERT"
+            android:layout_marginRight="0.0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:layout_marginTop="24dp" />
+        <EditText
+            android:id="@+id/AnswerInfix"
+            android:gravity="center"
+            android:layout_margin="24dp" />
+        <EditText
+            android:id="@+id/AnswerPrefix"
+            android:gravity="center"
+            android:layout_margin="24dp" />
+        <EditText
+            android:id="@+id/AnswerPostfix"
+            android:gravity="center"
+            android:layout_margin="24dp" />
+        <EditText
+            android:id="@+id/AnswerValue"
+            android:gravity="center"
+            android:layout_margin="24dp" />
+    </TableLayout>
+</LinearLayout>
